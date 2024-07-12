@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>API Documentation</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                margin: 20px;
+            }
+            h1,
+            h2,
+            h3 {
+                color: #333;
+            }
+            code {
+                background-color: #f4f4f4;
+                padding: 5px;
+                border: 1px solid #ccc;
+                display: block;
+                margin-bottom: 10px;
+            }
+            pre {
+                background-color: #f4f4f4;
+                padding: 10px;
+                border: 1px solid #ccc;
+                overflow-x: auto;
+                margin-bottom: 10px;
+            }
+            .endpoint {
+                margin-bottom: 20px;
+            }
+            .method {
+                font-weight: bold;
+                color: #333;
+            }
+            .endpoint-description {
+                margin-bottom: 10px;
+            }
+            .response-code {
+                font-weight: bold;
+                color: #333;
+            }
+            .test-credentials {
+                margin-top: 10px;
+                background-color: #f4f4f4;
+                padding: 10px;
+                border: 1px solid #ccc;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>API Documentation</h1>
+
+        <h2>Authentication</h2>
+
+        <h3>Login</h3>
+
+        <div class="endpoint">
+            <p class="method">POST</p>
+            <p class="endpoint-description">
+                Logs in a user with username or email and returns an
+                authentication token if credentials are valid.
+            </p>
+            <code>Endpoint: /auth/login</code>
+            <pre>
+    Request Body (using username):
+    <code>{
+      "identification": "juanperez",
+      "password": "thepassword123#$"
+    }</code>
+  </pre>
+            <pre>
+    Request Body (using email):
+    <code>{
+      "identification": "juanperez@nolatech.com",
+      "password": "thepassword123#$"
+    }</code>
+  </pre>
+            <pre>
+    Response:
+    <code>{
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    }</code>
+  </pre>
+            <div class="test-credentials">
+                <p><strong>Test Credentials:</strong></p>
+                <p><strong>Username:</strong> juanperez</p>
+                <p><strong>Email:</strong> juanperez@nolatech.com</p>
+                <p><strong>Password:</strong> thepassword123#$</p>
+            </div>
+            <div class="response-code">Responses:</div>
+            <ul>
+                <li><strong>200 OK:</strong> Successful login.</li>
+                <li><strong>401 Unauthorized:</strong> Invalid credentials.</li>
+            </ul>
+        </div>
+
+        <h2>Users</h2>
+
+        <h3>Get All Users</h3>
+
+        <div class="endpoint">
+            <p class="method">GET</p>
+            <p class="endpoint-description">
+                Retrieves a list of users. Sensitive fields (username, email,
+                status) are empty when the request is not authenticated.
+            </p>
+            <code>Endpoint: /users</code>
+            <pre>
+    Query Parameters:
+    <code>limit (optional): Limits the number of results per page. Default is 10.
+page (optional): Specifies the page number. Default is 1.</code>
+  </pre>
+            <pre>
+    Response:
+    <code>{
+  "data": [
+    {
+      "id": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "username": "",
+      "email": "",
+      "status": "",
+      "created_at": "string (ISO 8601)",
+      "updated_at": "string (ISO 8601)"
+    }
+  ],
+  "meta": {
+    "page": 1,
+    "limit": 10,
+    "totalRecords": 3,
+    "totalPages": 1,
+    "prevPage": null,
+    "nextPage": null
+  }
+}</code>
+  </pre>
+            <div class="response-code">Responses:</div>
+            <ul>
+                <li>
+                    <strong>200 OK:</strong> Successfully retrieved user list.
+                </li>
+                <li>
+                    <strong>401 Unauthorized:</strong> Authentication token not
+                    provided or invalid.
+                </li>
+            </ul>
+        </div>
+
+        <h3>Get User by ID</h3>
+
+        <div class="endpoint">
+            <p class="method">GET</p>
+            <p class="endpoint-description">Retrieves a single user by ID.</p>
+            <code>Endpoint: /users/:id</code>
+            <pre>
+    Response:
+    <code>{
+  "id": "string",
+  "firstName": "string",
+  "lastName": "string",
+  "username": "",
+  "email": "",
+  "status": "",
+  "created_at": "string (ISO 8601)",
+  "updated_at": "string (ISO 8601)"
+}</code>
+  </pre>
+            <div class="response-code">Responses:</div>
+            <ul>
+                <li><strong>200 OK:</strong> Successfully retrieved user.</li>
+                <li>
+                    <strong>401 Unauthorized:</strong> Authentication token not
+                    provided or invalid.
+                </li>
+                <li>
+                    <strong>404 Not Found:</strong> User with the specified ID
+                    not found.
+                </li>
+            </ul>
+        </div>
+
+        <h3>Update User</h3>
+
+        <div class="endpoint">
+            <p class="method">PUT</p>
+            <p class="endpoint-description">Updates a user's information.</p>
+            <code>Endpoint: /users/:id</code>
+            <pre>
+    Request Body:
+    <code>{
+  "firstName": "string",
+  "lastName": "string",
+  "email": "string",
+  "status": "string"
+}</code>
+  </pre>
+            <div class="response-code">Responses:</div>
+            <ul>
+                <li><strong>200 OK:</strong> Successfully updated user.</li>
+                <li>
+                    <strong>401 Unauthorized:</strong> Authentication token not
+                    provided or invalid.
+                </li>
+                <li>
+                    <strong>404 Not Found:</strong> User with the specified ID
+                    not found.
+                </li>
+            </ul>
+        </div>
+
+        <h3>Delete User</h3>
+
+        <div class="endpoint">
+            <p class="method">DELETE</p>
+            <p class="endpoint-description">Deletes a user.</p>
+            <code>Endpoint: /users/:id</code>
+            <div class="response-code">Responses:</div>
+            <ul>
+                <li>
+                    <strong>204 No Content:</strong> Successfully deleted user.
+                </li>
+                <li>
+                    <strong>401 Unauthorized:</strong> Authentication token not
+                    provided or invalid.
+                </li>
+                <li>
+                    <strong>404 Not Found:</strong> User with the specified ID
+                    not found.
+                </li>
+            </ul>
+        </div>
+    </body>
+</html>
